@@ -1,0 +1,13 @@
+<div>
+    {% for review in reviews %}
+        <h4>
+            {% if review.client_image_id is not empty %}
+                {% set image = sulu_resolve_media(review.client_image_id, 'fr') %}
+                <img src="{{ image.thumbnails["sulu-400x400"] }}" alt="{{ image.title }}"/>
+            {% endif %}
+            {{ review.name }} - {{ review.date|date('d-m-Y') }}
+        </h4>
+        <p>{{ review.rating }}/5</p>
+        {{ review.message|raw }}
+    {% endfor %}
+</div>

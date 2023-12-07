@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<form xmlns="http://schemas.sulu.io/template/template"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://schemas.sulu.io/template/template http://schemas.sulu.io/template/form-1.0.xsd"
+>
+    <key>review_settings</key>
+    <properties>
+        <property name="totalRating" type="text_line" colspan="6" mandatory="true">
+            <meta>
+                <title>review_settings.totalRating</title>
+            </meta>
+        </property>
+
+        <property name="averageRating" type="text_line" colspan="6" mandatory="true">
+            <meta>
+                <title>review_settings.averageRating</title>
+            </meta>
+        </property>
+
+        <property name="useGoogleRating" type="checkbox" colspan="6">
+            <meta>
+                <title>review_settings.useGoogleRating</title>
+            </meta>
+        </property>
+        
+        <property name="retrieveReviews" type="checkbox" colspan="6" visibleCondition="useGoogleRating == true">
+            <meta>
+                <title>review_settings.retrieveReviews</title>
+            </meta>
+        </property>
+
+        <property name="placeId" type="text_line" colspan="6" visibleCondition="useGoogleRating == true">
+            <meta>
+                <title>review_settings.placeId</title>
+                <info_text>Le "place_id" est un identifiant unique donné par Google qui permet d'identifier un emplacement sur une carte.</info_text>
+            </meta>
+        </property>
+
+        <property name="apiKey" type="text_line" colspan="6" visibleCondition="useGoogleRating == true">
+            <meta>
+                <title>review_settings.apiKey</title>
+                <info_text>La clé de l'API de Google My Business qui permet d'accéder aux information du compte</info_text>
+            </meta>
+        </property>
+    </properties>
+</form>

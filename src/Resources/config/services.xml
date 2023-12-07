@@ -1,0 +1,107 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="pixel_review.reviews_route_controller"
+                 class="Pixel\ReviewBundle\Controller\Admin\ReviewController"
+                 public="true">
+            <argument type="service" id="pixel_review.common.doctrine_list_representation_factory"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="sulu_media.media_manager"/>
+            <argument type="service" id="review.review_repository"/>
+            <argument type="service" id="sulu_trash.trash_manager"/>
+            <argument type="service" id="sulu_activity.domain_event_collector"/>
+            <argument type="service" id="fos_rest.view_handler.default"/>
+            <argument type="service" id="security.token_storage"/>
+            <tag name="sulu.context" context="admin"/>
+        </service>
+
+        <service id="pixel_review.review" class="Pixel\ReviewBundle\Admin\ReviewAdmin">
+            <argument type="service" id="sulu_admin.view_builder_factory"/>
+            <argument type="service" id="sulu_security.security_checker"/>
+            <argument type="service" id="sulu_core.webspace.webspace_manager"/>
+            <argument type="service" id="sulu_activity.activity_list_view_builder_factory"/>
+            <tag name="sulu.admin"/>
+            <tag name="sulu.context" context="admin"/>
+        </service>
+
+        <service id="pixel_review.settings_route_controller"
+                 class="Pixel\ReviewBundle\Controller\Admin\SettingController"
+                 public="true">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="fos_rest.view_handler.default"/>
+            <argument type="service" id="security.token_storage"/>
+            <tag name="sulu.context" context="admin"/>
+        </service>
+
+        <service id="pixel_review.setting" class="Pixel\ReviewBundle\Admin\SettingAdmin">
+            <argument type="service" id="sulu_admin.view_builder_factory"/>
+            <argument type="service" id="sulu_security.security_checker"/>
+            <tag name="sulu.admin"/>
+            <tag name="sulu.context" context="admin"/>
+        </service>
+
+        <!-- Command -->
+        <service id="pixel_review.sync_google_rating_command" class="Pixel\ReviewBundle\Command\SyncGoogleRatingCommand">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="http_client"/>
+            <tag name="console.command"/>
+        </service>
+
+        <!-- Common -->
+        <service id="pixel_review.common.doctrine_list_representation_factory" public="true"
+                 class="Pixel\ReviewBundle\Common\DoctrineListRepresentationFactory">
+            <argument type="service" id="sulu_core.rest_helper"/>
+            <argument type="service" id="sulu_core.list_rest_helper"/>
+            <argument type="service" id="sulu_core.doctrine_list_builder_factory"/>
+            <argument type="service" id="sulu_core.list_builder.field_descriptor_factory"/>
+            <tag name="sulu.context" context="admin"/>
+        </service>
+
+        <service id="review.review_repository" class="Pixel\ReviewBundle\Repository\ReviewRepository" public="true"
+                 lazy="true">
+            <argument type="service" id="doctrine.orm.default_entity_manager"/>
+            <argument type="service">
+                <service class="Doctrine\ORM\Mapping\ClassMetadata">
+                    <argument>Pixel\ReviewBundle\Entity\Review</argument>
+                    <factory service="doctrine.orm.default_entity_manager" method="getClassMetadata"/>
+                </service>
+            </argument>
+        </service>
+
+        <service id="review.smart_content.data_provider.example"
+                 class="Pixel\ReviewBundle\Content\ReviewDataProvider">
+            <argument type="service" id="review.review_repository"/>
+            <argument type="service" id="sulu_core.array_serializer"/>
+            <argument type="service" id="request_stack"/>
+            <tag name="sulu.smart_content.data_provider" alias="review"/>
+        </service>
+
+        <!--Content/Type-->
+        <service id="sulu_review.single_review_selection" class="Pixel\ReviewBundle\Content\Type\SingleReviewSelection">
+            <argument type="service" id="doctrine.orm.default_entity_manager"/>
+
+            <tag name="sulu.content.type" alias="single_review_selection"/>
+        </service>
+
+        <service id="sulu_review.review_selection" class="Pixel\ReviewBundle\Content\Type\ReviewSelection">
+            <argument type="service" id="doctrine.orm.default_entity_manager"/>
+
+            <tag name="sulu.content.type" alias="review_selection"/>
+        </service>
+
+        <!--Trash-->
+        <service id="sulu_review.review_trash_item_handler" class="Pixel\ReviewBundle\Trash\ReviewTrashItemHandler">
+            <argument type="service" id="sulu_trash.trash_item_repository"/>
+            <argument type="service" id="doctrine.orm.default_entity_manager"/>
+            <argument type="service" id="sulu_trash.doctrine_restore_helper"/>
+            <argument type="service" id="sulu_activity.domain_event_collector"/>
+
+            <tag name="sulu_trash.store_trash_item_handler"/>
+            <tag name="sulu_trash.restore_trash_item_handler"/>
+            <tag name="sulu_trash.restore_configuration_provider"/>
+        </service>
+
+    </services>
+</container>

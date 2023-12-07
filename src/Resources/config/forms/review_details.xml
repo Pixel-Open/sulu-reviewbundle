@@ -1,0 +1,69 @@
+<?xml version="1.0" ?>
+<form xmlns="http://schemas.sulu.io/template/template"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://schemas.sulu.io/template/template http://schemas.sulu.io/template/form-1.0.xsd"
+>
+    <key>review_details</key>
+    <properties>
+        <property name="name" type="text_line" mandatory="true">
+            <meta>
+                <title>review.name</title>
+            </meta>
+        </property>
+        <property name="date" type="date" mandatory="true">
+            <meta>
+                <title>review.date</title>
+            </meta>
+        </property>
+        <property name="rating" type="single_select" mandatory="true">
+            <meta>
+                <title>review.rating</title>
+            </meta>
+            <params>
+                <param name="default_value" value="1"/>
+                <param name="values" type="collection">
+                    <param name="1">
+                        <meta>
+                            <title>1</title>
+                        </meta>
+                    </param>
+                    <param name="2">
+                        <meta>
+                            <title>2</title>
+                        </meta>
+                    </param>
+                    <param name="3">
+                        <meta>
+                            <title>3</title>
+                        </meta>
+                    </param>
+                    <param name="4">
+                        <meta>
+                            <title>4</title>
+                        </meta>
+                    </param>
+                    <param name="5">
+                        <meta>
+                            <title>5</title>
+                        </meta>
+                    </param>
+                </param>
+            </params>
+        </property>
+        <property name="message" type="text_editor" mandatory="true">
+            <meta>
+                <title>review.message</title>
+            </meta>
+        </property>
+        <property name="isFromGoogle" type="checkbox" disabledCondition="true">
+            <meta>
+                <title>review.isFromGoogle</title>
+            </meta>
+        </property>
+        <property name="clientImage" type="single_media_selection">
+            <meta>
+                <title>review.clientImage</title>
+            </meta>
+        </property>
+    </properties>
+</form>

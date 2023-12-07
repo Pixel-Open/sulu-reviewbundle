@@ -1,0 +1,12 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  Pixel\ReviewBundle\Twig\ReviewExtension:
+    public: true
+    autowire: true
+    arguments:
+      $reviewRepository: "@review.review_repository"
+    tags:
+      - {name: twig.extension}
