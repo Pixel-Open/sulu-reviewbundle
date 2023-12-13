@@ -10,3 +10,9 @@ services:
       $reviewRepository: "@review.review_repository"
     tags:
       - {name: twig.extension}
+
+  Pixel\ReviewBundle\Twig\SettingsExtension:
+    public: false
+    autowire: true
+    tags:
+      - {name: twig.extension}

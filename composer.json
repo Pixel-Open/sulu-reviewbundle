@@ -4,7 +4,8 @@
   "description": "Review bundle (Google My Business Review) for Sulu",
   "keywords": [
     "sulu",
-    "suluCms"
+    "suluCms",
+    "sulu-bundle"
   ],
   "homepage": "https://github.com/Pixel-Open/sulu-reviewbundle",
   "license": "MIT",

@@ -1,10 +1,20 @@
 # Sulu Review bundle
 
+![GitHub release (with filter)](https://img.shields.io/github/v/release/Pixel-Open/sulu-reviewbundle?style=for-the-badge)
+ [![Dependency](https://img.shields.io/badge/sulu-2.5-cca000.svg?style=for-the-badge)](https://sulu.io/)
+
+## Presentation
+
+
+
+A bundle to display customer reviews for the Sulu CMS.
+Reviews can be retrieved automatically from Google My Business.
 
 ## Requirements
 
-* PHP >= 7.4
-* Sulu >= 2.4.*
+* PHP >= 8.0
+* Composer
+* Sulu >= 2.5.*
 * Symfony >= 5.4
 
 
@@ -17,7 +27,7 @@ project:
 
 ```bash
 
-composer require pixeldev/sulu-reviewbundle --with-all-dependencies
+composer require pixelopen/sulu-reviewbundle
 
 ```
 
@@ -33,9 +43,8 @@ Enable the bundle by adding it to the list of registered bundles in the `config/
  ```
 
 ### Update schema
-```shell script
-bin/console do:sch:up --force
-```
+
+Use a doctrine migration for this.
 
 ## Bundle Config
 
@@ -46,5 +55,11 @@ review.reviews_api:
   prefix: /admin/api
   resource: pixel_review.reviews_route_controller
   name_prefix: review.
+
+review.setting_api:
+ type: rest
+ prefix: /admin/api
+ resource: pixel_review.settings_route_controller
+ name_prefix: review.
 ```
 

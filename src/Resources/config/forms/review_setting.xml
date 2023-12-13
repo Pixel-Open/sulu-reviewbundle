@@ -32,14 +32,14 @@
         <property name="placeId" type="text_line" colspan="6" visibleCondition="useGoogleRating == true">
             <meta>
                 <title>review_settings.placeId</title>
-                <info_text>Le "place_id" est un identifiant unique donné par Google qui permet d'identifier un emplacement sur une carte.</info_text>
+                <info_text>review_settings.info_placeId</info_text>
             </meta>
         </property>
 
         <property name="apiKey" type="text_line" colspan="6" visibleCondition="useGoogleRating == true">
             <meta>
                 <title>review_settings.apiKey</title>
-                <info_text>La clé de l'API de Google My Business qui permet d'accéder aux information du compte</info_text>
+                <info_text>review_settings.info_apiKey</info_text>
             </meta>
         </property>
     </properties>
