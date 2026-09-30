@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.6.1
+
++ Add reference for Sulu 2.6
++ Migration annotation to attributes for the entities
+- Fix deprecation for Sulu 2.6.25
+
 ## 2.6.0 (21/05/2024)
 
 + Compatible Symfony 6 and Sulu 2.6

@@ -7,40 +7,28 @@ use JMS\Serializer\Annotation as Serializer;
 use Sulu\Component\Persistence\Model\AuditableInterface;
 use Sulu\Component\Persistence\Model\AuditableTrait;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="review_translation")
- * @ORM\Entity(repositoryClass="Pixel\ReviewBundle\Repository\ReviewRepository")
- * @Serializer\ExclusionPolicy("all")
- */
+#[ORM\Entity(repositoryClass: "Pixel\ReviewBundle\Repository\ReviewRepository")]
+#[ORM\Table(name: "review_translation")]
+#[Serializer\ExclusionPolicy("all")]
 class ReviewTranslation implements AuditableInterface
 {
     use AuditableTrait;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     * @Serializer\Expose()
-     */
+    #[ORM\Id()]
+    #[ORM\GeneratedValue()]
+    #[ORM\Column(type: "integer")]
+    #[Serializer\Expose()]
     private ?int $id = null;
 
-    /**
-     * @var Review
-     * @ORM\ManyToOne(targetEntity="Pixel\ReviewBundle\Entity\Review", inversedBy="translations")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $review;
+    #[ORM\ManyToOne(targetEntity: "Pixel\ReviewBundle\Entity\Review", inversedBy: "translations")]
+    #[ORM\JoinColumn(nullable: true)]
+    private Review $review;
 
-    /**
-     * @ORM\Column(type="string", length=5)
-     */
+    #[ORM\Column(type: "string", length: 5)]
     private string $locale;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "text")]
+    #[Serializer\Expose()]
     private string $message;
 
     public function __construct(Review $review, string $locale)
