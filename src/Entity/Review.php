@@ -9,12 +9,9 @@ use JMS\Serializer\Annotation as Serializer;
 use Sulu\Bundle\CategoryBundle\Entity\CategoryInterface;
 use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="review")
- * @ORM\Entity(repositoryClass="Pixel\ReviewBundle\Repository\ReviewRepository")
- * @Serializer\ExclusionPolicy("all")
- */
+#[ORM\Entity(repositoryClass: "Pixel\ReviewBundle\Repository\ReviewRepository")]
+#[ORM\Table(name: "review")]
+#[Serializer\ExclusionPolicy("all")]
 class Review
 {
     public const RESOURCE_KEY = "reviews";
@@ -22,60 +19,44 @@ class Review
     public const FORM_KEY = "review_details";
     public const SECURITY_CONTEXT = "review.reviews";
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     * @Serializer\Expose()
-     */
+    #[ORM\Id()]
+    #[ORM\GeneratedValue()]
+    #[ORM\Column(type: "integer")]
+    #[Serializer\Expose()]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "string")]
+    #[Serializer\Expose()]
     private string $name;
 
-    /**
-     * @ORM\Column(type="datetime_immutable")
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "datetime_immutable")]
+    #[Serializer\Expose()]
     private \DateTimeImmutable $date;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "integer")]
+    #[Serializer\Expose()]
     private int $rating;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "boolean", nullable: true)]
+    #[Serializer\Expose()]
     private ?bool $isFromGoogle = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=MediaInterface::class)
-     * @Serializer\Expose()
-     */
+    #[ORM\ManyToOne(targetEntity: MediaInterface::class)]
+    #[Serializer\Expose()]
     private ?MediaInterface $clientImage = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "boolean", nullable: true)]
+    #[Serializer\Expose()]
     private ?bool $isActive;
 
     /**
      * @var Collection<string, ReviewTranslation>
-     * @ORM\OneToMany(targetEntity="Pixel\ReviewBundle\Entity\ReviewTranslation", mappedBy="review", cascade={"ALL"}, indexBy="locale")
-     * @Serializer\Exclude()
      */
+    #[ORM\OneToMany(targetEntity: "Pixel\ReviewBundle\Entity\ReviewTranslation", mappedBy: "review", cascade: ["ALL"], indexBy: "locale")]
+    #[Serializer\Exclude()]
     private $translations;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private ?string $defaultLocale;
 
     private string $locale = "fr";
@@ -181,9 +162,7 @@ class Review
         $this->locale = $locale;
     }
 
-    /**
-     * @Serializer\VirtualProperty(name="message")
-     */
+    #[Serializer\VirtualProperty(name: "message")]
     public function getMessage(): ?string
     {
         $translation = $this->getTranslation($this->locale);

@@ -7,11 +7,9 @@ use JMS\Serializer\Annotation as Serializer;
 use Sulu\Component\Persistence\Model\AuditableInterface;
 use Sulu\Component\Persistence\Model\AuditableTrait;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="review_settings")
- * @Serializer\ExclusionPolicy("all")
- */
+#[ORM\Entity()]
+#[ORM\Table(name: "review_settings")]
+#[Serializer\ExclusionPolicy("all")]
 class Setting implements AuditableInterface
 {
     use AuditableTrait;
@@ -20,48 +18,34 @@ class Setting implements AuditableInterface
     public const FORM_KEY = "review_settings";
     public const SECURITY_CONTEXT = "review_settings.settings";
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     * @Serializer\Expose()
-     */
+    #[ORM\Id()]
+    #[ORM\GeneratedValue()]
+    #[ORM\Column(type: "integer")]
+    #[Serializer\Expose()]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "integer")]
+    #[Serializer\Expose()]
     private int $totalRating;
 
-    /**
-     * @ORM\Column(type="float")
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "float")]
+    #[Serializer\Expose()]
     private float $averageRating;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "string", nullable: true)]
+    #[Serializer\Expose()]
     private ?string $placeId = null;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "string", nullable: true)]
+    #[Serializer\Expose()]
     private ?string $apiKey = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "boolean", nullable: true)]
+    #[Serializer\Expose()]
     private ?bool $useGoogleRating = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "boolean", nullable: true)]
+    #[Serializer\Expose()]
     private ?bool $retrieveReviews;
 
     public function getId(): ?int

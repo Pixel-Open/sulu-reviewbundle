@@ -33,7 +33,7 @@ class ReviewDataItem implements ItemInterface
      */
     public function getTitle(): string
     {
-        return (string)$this->entity->getName();
+        return $this->entity->getName();
     }
 
     /**

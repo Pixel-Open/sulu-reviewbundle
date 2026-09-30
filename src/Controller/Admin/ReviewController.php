@@ -16,6 +16,7 @@ use Pixel\ReviewBundle\Domain\Event\ReviewCreatedEvent;
 use Pixel\ReviewBundle\Domain\Event\ReviewModifiedEvent;
 use Pixel\ReviewBundle\Domain\Event\ReviewRemovedEvent;
 use Pixel\ReviewBundle\Entity\Review;
+use Pixel\ReviewBundle\Reference\ReviewReferenceProvider;
 use Pixel\ReviewBundle\Repository\ReviewRepository;
 use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
 use Sulu\Bundle\MediaBundle\Media\Manager\MediaManagerInterface;
@@ -23,7 +24,6 @@ use Sulu\Bundle\TrashBundle\Application\TrashManager\TrashManagerInterface;
 use Sulu\Component\Rest\AbstractRestController;
 use Sulu\Component\Rest\Exception\EntityNotFoundException;
 use Sulu\Component\Rest\Exception\RestException;
-use Sulu\Component\Rest\RequestParametersTrait;
 use Sulu\Component\Security\SecuredControllerInterface;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,14 +36,13 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ReviewController extends AbstractRestController implements ClassResourceInterface, SecuredControllerInterface
 {
-    use RequestParametersTrait;
-
     private DoctrineListRepresentationFactory $doctrineListRepresentationFactory;
     private EntityManagerInterface $entityManager;
     private MediaManagerInterface $mediaManager;
     private ReviewRepository $reviewRepository;
     private TrashManagerInterface $trashManager;
     private DomainEventCollectorInterface $domainEventCollector;
+    private ReviewReferenceProvider $reviewReferenceProvider;
 
     public function __construct(
         DoctrineListRepresentationFactory $doctrineListRepresentationFactory,
@@ -53,6 +52,7 @@ class ReviewController extends AbstractRestController implements ClassResourceIn
         TrashManagerInterface $trashManager,
         DomainEventCollectorInterface $domainEventCollector,
         ViewHandlerInterface $viewHandler,
+        ReviewReferenceProvider $reviewReferenceProvider,
         ?TokenStorageInterface $tokenStorage = null
     ) {
         $this->doctrineListRepresentationFactory = $doctrineListRepresentationFactory;
@@ -61,6 +61,7 @@ class ReviewController extends AbstractRestController implements ClassResourceIn
         $this->reviewRepository = $reviewRepository;
         $this->trashManager = $trashManager;
         $this->domainEventCollector = $domainEventCollector;
+        $this->reviewReferenceProvider = $reviewReferenceProvider;
         parent::__construct($viewHandler, $tokenStorage);
     }
 
@@ -119,6 +120,7 @@ class ReviewController extends AbstractRestController implements ClassResourceIn
             new ReviewModifiedEvent($review, $data)
         );
         $this->save($review);
+        $this->reviewReferenceProvider->updateReferences($review, (string) $this->getLocale($request), 'admin');
         return $this->handleView($this->view($review));
     }
 
@@ -148,6 +150,7 @@ class ReviewController extends AbstractRestController implements ClassResourceIn
             new ReviewCreatedEvent($review, $data)
         );
         $this->save($review);
+        $this->reviewReferenceProvider->updateReferences($review, (string) $this->getLocale($request), 'admin');
         return $this->handleView($this->view($review, 201));
     }
 
@@ -179,8 +182,8 @@ class ReviewController extends AbstractRestController implements ClassResourceIn
      */
     public function postTriggerAction(int $id, Request $request): Response
     {
-        $action = $this->getRequestParameter($request, 'action', true);
-        $locale = $this->getRequestParameter($request, 'locale', true);
+        $action = $request->query->get('action');
+        $locale = $request->query->get('locale');
         try {
             switch ($action) {
                 case 'enable':
