@@ -5,15 +5,18 @@ namespace Pixel\ReviewBundle\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use Pixel\ReviewBundle\Entity\Review;
 use Pixel\ReviewBundle\Entity\Setting;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+#[AsCommand(
+    name: "sync:google:rating",
+    description: "Synchronizes the rating with the ones from Google",
+)]
 class SyncGoogleRatingCommand extends Command
 {
-    protected static $defaultName = "sync:google:rating";
-    protected static $defaultDescription = "Synchronizes the rating with the ones from Google";
     private EntityManagerInterface $entityManager;
     private HttpClientInterface $client;
 
@@ -32,7 +35,7 @@ class SyncGoogleRatingCommand extends Command
         $this->setHelp("Synchronizes the rating with the ones from Google");
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln("Synchronization...");
         $setting = $this->entityManager->getRepository(Setting::class)->findOneBy([]);
